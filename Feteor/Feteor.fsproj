@@ -7,6 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Feteor</RootNamespace>
     <AssemblyName>Feteor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,17 +27,14 @@
     <Reference Include="System.Numerics" />
     <Reference Include="FSharp.Core" />
     <Reference Include="Fable.Core">
-      <HintPath>..\node_modules\fable-core\Fable.Core.dll</HintPath>
+      <HintPath>../node_modules/fable-core/Fable.Core.dll</HintPath>
     </Reference>
     <Reference Include="Fable.Compiler">
-      <HintPath>..\node_modules\fable-compiler\bin\Fable.Compiler.dll</HintPath>
-    </Reference>
-    <Reference Include="Fable.Client.Node">
-      <HintPath>..\node_modules\fable-compiler\bin\Fable.Client.Node.exe</HintPath>
+      <HintPath>../node_modules/fable-compiler/bin/Fable.Compiler.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.fs" />
+    <!--<Compile Include="AssemblyInfo.fs" />-->
     <Compile Include="Fable.Meteor.Browser.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />

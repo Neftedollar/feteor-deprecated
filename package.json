@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "fable": "fable",
+    "fablejs": "fable --target umd",
     "test": "echo no test",
     "browserTS": "ts2fable node_modules/meteor-typings/1.3/browser.d.ts > Fable.Import.browser.fs",
     "checkTS" : "ts2fable node_modules/meteor-typings/1.3/packages/check.d.ts > Fable.Import.check.fs",

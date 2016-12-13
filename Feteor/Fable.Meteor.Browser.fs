@@ -11,9 +11,9 @@ module Mongo =
     type Selector = 
         [<Emit("$0[$1]{{=$2}}")>] abstract Item: key: string -> obj with get, set
 
-    and Modifier =
+    and [<KeyValueList>]Modifier =
         interface end
-    and SortSpecifier =
+    and [<KeyValueList>]SortSpecifier =
         interface end
     and FieldSpecifier =
         [<Emit("$0[$1]{{=$2}}")>] abstract Item: id: string -> float with get, set
