@@ -111,7 +111,7 @@ module Meteor =
         static member clearInterval(id: float): unit = jsNative
         static member clearTimeout(id: float): unit = jsNative
         static member defer(func: Function): unit = jsNative
-        static member startup(func: Function): unit = jsNative
+        static member startup(func: System.Action): unit = jsNative
         static member wrapAsync(func: Function, ?context: obj): obj = jsNative
 
     and ErrorStatic =

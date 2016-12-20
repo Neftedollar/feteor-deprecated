@@ -2,12 +2,16 @@
   "name": "test_application_meteor",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "fable-meteor" : "fable"
   },
   "dependencies": {
     "babel-runtime": "6.18.0",
     "fable-core": "^0.7.15",
     "fable-powerpack": "0.0.19",
     "meteor-node-stubs": "~0.2.0"
+  },
+  "devDependencies": {
+   "fable-compiler": "^0.7.22" 
   }
 }
