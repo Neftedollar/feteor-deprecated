@@ -1,3 +1,14 @@
 {
-    "typescript.check.workspaceVersion": false
+    "typescript.check.workspaceVersion": false,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/bin": true,
+        "**/obj": true,
+        "**/.meteor" : true
+    }
+,
+"FSharp.automaticProjectModification": true
 }
