@@ -2,3 +2,4 @@ node_modules/
 dist/
 [Bb]in/
 [Oo]bj/
+ExampleApplication/**/*.js
