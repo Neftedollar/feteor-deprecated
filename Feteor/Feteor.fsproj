@@ -1,24 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <AssemblyName>Feteor</AssemblyName>
+    <RootNamespace>Feteor</RootNamespace>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DEE278F0-3842-4CBE-B219-B045199EBE71}</ProjectGuid>
+    <ProjectGuid>dee278f0-3842-4cbe-b219-b045199ebe71</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Feteor</RootNamespace>
-    <AssemblyName>Feteor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -34,8 +30,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <!--<Compile Include="AssemblyInfo.fs" />-->
-    <Compile Include="Fable.Meteor.Browser.fs" />
+    <Compile Include="Fable.Import.Meteor.Common.fs" />
+    <Compile Include="Fable.Import.Meteor.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
 </Project>

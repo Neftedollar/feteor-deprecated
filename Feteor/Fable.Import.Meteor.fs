@@ -1,4 +1,4 @@
-﻿namespace Fable.Meteor
+﻿namespace Fable.Import.Meteor
 open System
 open System.Text.RegularExpressions
 open Fable.Core
