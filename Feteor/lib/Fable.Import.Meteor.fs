@@ -88,16 +88,10 @@ module Meteor =
         [<Emit("$0[$1]{{=$2}}")>] abstract Item: id: string -> obj with get, set
 
     type [<Import("Meteor","meteor/meteor")>] Globals =
-        static member isDevelopment with get(): bool = jsNative and set(v: bool): unit = jsNative
-        static member isTest with get(): bool = jsNative and set(v: bool): unit = jsNative
         static member onConnection(callback: Function): unit = jsNative
         static member publish(name: string, func: Function): unit = jsNative
-        static member isClient with get(): bool = jsNative and set(v: bool): unit = jsNative
-        static member isCordova with get(): bool = jsNative and set(v: bool): unit = jsNative
-        static member isServer with get(): bool = jsNative and set(v: bool): unit = jsNative
-        static member isProduction with get(): bool = jsNative and set(v: bool): unit = jsNative
-        static member release with get(): string = jsNative and set(v: string): unit = jsNative
-        static member settings with get(): settingsType = jsNative and set(v: settingsType): unit = jsNative
+
+       
         static member users with get(): Mongo.Collection<User> = jsNative and set(v: Mongo.Collection<User>): unit = jsNative
         static member Error with get(): ErrorStatic = jsNative and set(v: ErrorStatic): unit = jsNative
         static member user(): User = jsNative
@@ -110,9 +104,6 @@ module Meteor =
         static member setTimeout(func: Function, delay: float): float = jsNative
         static member clearInterval(id: float): unit = jsNative
         static member clearTimeout(id: float): unit = jsNative
-        static member defer(func: Function): unit = jsNative
-        static member startup(func: System.Action): unit = jsNative
-        static member wrapAsync(func: Function, ?context: obj): obj = jsNative
 
     and ErrorStatic =
         [<Emit("new $0($1...)")>] abstract Create: error: U2<string, float> * ?reason: string * ?details: string -> Error
