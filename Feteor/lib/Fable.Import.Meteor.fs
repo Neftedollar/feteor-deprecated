@@ -60,7 +60,7 @@ module Mongo =
     and ObjectID =
         interface end
 
-    type [<Import("Mongo","meteor/mongo")>] Globals =
+    type [<Import("Mongo","meteor/mongo")>] Mongo =
         static member Collection with get(): CollectionStatic = jsNative and set(v: CollectionStatic): unit = jsNative
         static member Cursor with get(): CursorStatic = jsNative and set(v: CursorStatic): unit = jsNative
         static member ObjectID with get(): ObjectIDStatic = jsNative and set(v: ObjectIDStatic): unit = jsNative
@@ -120,12 +120,16 @@ module Meteor =
         static member call(name: string, [<ParamArray>] args: obj[]): obj = jsNative
         static member apply(name: string, args: ResizeArray<EJSON.EJSONable>, ?options: obj, ?asyncCallback: Function): obj = jsNative
         static member absoluteUrl(?path: string, ?options: AbsoluteUrlOptions list): string = jsNative
-        static member setInterval(func: System.Action, delay: float): float = jsNative
-        static member setTimeout(func: System.Action, delay: float): float = jsNative
+        [<Emit("Meteor.setInterval($0,$1)")>]
+        static member setInterval (func: unit -> unit)  (delay: int): float = jsNative
+        [<Emit("Meteor.setTimeout($0,$1)")>]
+        static member setTimeout (func: unit-> unit)  (delay: int): float = jsNative
         static member clearInterval(id: float): unit = jsNative
         static member clearTimeout(id: float): unit = jsNative
-        static member defer(func: System.Action): unit = jsNative
-        static member startup(func: System.Action): unit = jsNative
+        [<Emit("Meteor.defer($0)")>]
+        static member defer(func: unit -> unit): unit = jsNative
+        [<Emit("Meteor.startup($0)")>]
+        static member startup(func: unit -> unit): unit = jsNative
         static member wrapAsync(func: obj, ?context: obj): obj = jsNative
 
     and ErrorStatic =
@@ -148,15 +152,8 @@ module Meteor =
         abstract profile: obj option with get, set
         abstract services: obj option with get, set
 
-    type Connection =
-        abstract id: string with get, set
-        abstract close: Function with get, set
-        abstract onClose: Function with get, set
-        abstract clientAddress: string with get, set
-        abstract httpHeaders: obj with get, set
-
     type Subscription =
-        abstract connection: Connection with get, set
+        abstract connection: MeteorConnection with get, set
         abstract userId: string with get, set
         abstract added: collection: string * id: string * fields: obj -> unit
         abstract changed: collection: string * id: string * fields: obj -> unit

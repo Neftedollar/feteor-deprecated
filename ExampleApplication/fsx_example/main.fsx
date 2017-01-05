@@ -16,17 +16,12 @@ Meteor.startup (fun _ ->
     printfn "Meteor.isTest %A" Meteor.isTest
     printfn "Meteor.release %A" Meteor.release
     printfn "Meteor.settings %A" Meteor.settings
-    // let methods = createObj [
-    //     "testMethod" ==> JsFunc0(fun () -> printfn "%A" jsThis?userId)
-    //     "anotherTestMethod" ==> JsFunc1(fun a -> printfn "%A" a)
-    // ]
-    // methods?antotherTestMethod <- fun a -> printfn "%A" a
-    let another_methods = createObj [
+
+    let methods = createObj [
         "new_method" ==> JsFunc0(fun () -> printfn "%A" jsThis?userId)
         "anotherTestMethod" ==> JsFunc1(fun a -> printfn "%A" a)
     ]
-    printfn "ok %A" another_methods
-    Meteor.methods another_methods
+    Meteor.methods methods
     )
 
 if Meteor.isServer then
@@ -39,7 +34,7 @@ Meteor.absoluteUrl("path", [
     Secure
     ReplaceLocalhost
 
-]) |> printfn "%s"
+]) |> printfn "%s" 
 Meteor.absoluteUrl("path", [
     Secure
     RootUrl("http://neftedollar.com")
@@ -53,3 +48,12 @@ Meteor.defer(fun () ->
     Meteor.call("anotherTestMethod", 3) |> ignore
     Meteor.call("anotherTestMethod", createObj [ "lol" ==> 3 ]) |> ignore
 )
+
+let mutable private IntervalId = 0.0
+let mutable private counter = 0
+IntervalId <- Meteor.setInterval (fun () ->  printfn "Interval is 1500 counter is %i" counter
+                                             counter <- counter + 1
+                                             if counter >= 4 then
+                                                Meteor.clearInterval IntervalId
+                                            ) 1500
+Meteor.setTimeout (fun _ -> printfn "TIMEOUT!!!") 1000
