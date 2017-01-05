@@ -1,0 +1,5 @@
+{
+    "projFile": "main.fsx",
+    "module": "commonjs",
+    "outDir": "./js"
+}

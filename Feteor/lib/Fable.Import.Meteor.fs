@@ -83,15 +83,35 @@ module EJSON =
 
 
 module Meteor =
+    [<KeyValueList>]
+    type AbsoluteUrlOptions =
+        ///  Create an HTTPS URL.
+        | Secure
+        ///  Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
+        | ReplaceLocalhost
+        ///Override the default ROOT_URL from the server environment. For example: "http://foo.example.com"  
+        | RootUrl of string
+        
     type settingsType =
         abstract ``public``: obj with get, set
         [<Emit("$0[$1]{{=$2}}")>] abstract Item: id: string -> obj with get, set
-
-    type [<Import("Meteor","meteor/meteor")>] Globals =
-        static member onConnection(callback: Function): unit = jsNative
+    type MeteorConnection = 
+        abstract id:string
+        abstract close: unit->unit
+        abstract onClose: System.Action -> unit
+        abstract clientAddres:string
+        abstract httpHeaders:obj 
+    type [<Import("Meteor","meteor/meteor")>] Meteor =
+        static member isDevelopment with get(): bool = jsNative and set(v: bool): unit = jsNative
+        static member isTest with get(): bool = jsNative and set(v: bool): unit = jsNative
+        static member onConnection(callback: System.Action<MeteorConnection>): unit = jsNative
         static member publish(name: string, func: Function): unit = jsNative
-
-       
+        static member isClient with get(): bool = jsNative and set(v: bool): unit = jsNative
+        static member isCordova with get(): bool = jsNative and set(v: bool): unit = jsNative
+        static member isServer with get(): bool = jsNative and set(v: bool): unit = jsNative
+        static member isProduction with get(): bool = jsNative and set(v: bool): unit = jsNative
+        static member release with get(): string = jsNative and set(v: string): unit = jsNative
+        static member settings with get(): settingsType = jsNative and set(v: settingsType): unit = jsNative
         static member users with get(): Mongo.Collection<User> = jsNative and set(v: Mongo.Collection<User>): unit = jsNative
         static member Error with get(): ErrorStatic = jsNative and set(v: ErrorStatic): unit = jsNative
         static member user(): User = jsNative
@@ -99,11 +119,14 @@ module Meteor =
         static member methods(methods: obj): unit = jsNative
         static member call(name: string, [<ParamArray>] args: obj[]): obj = jsNative
         static member apply(name: string, args: ResizeArray<EJSON.EJSONable>, ?options: obj, ?asyncCallback: Function): obj = jsNative
-        static member absoluteUrl(?path: string, ?options: obj): string = jsNative
-        static member setInterval(func: Function, delay: float): float = jsNative
-        static member setTimeout(func: Function, delay: float): float = jsNative
+        static member absoluteUrl(?path: string, ?options: AbsoluteUrlOptions list): string = jsNative
+        static member setInterval(func: System.Action, delay: float): float = jsNative
+        static member setTimeout(func: System.Action, delay: float): float = jsNative
         static member clearInterval(id: float): unit = jsNative
         static member clearTimeout(id: float): unit = jsNative
+        static member defer(func: System.Action): unit = jsNative
+        static member startup(func: System.Action): unit = jsNative
+        static member wrapAsync(func: obj, ?context: obj): obj = jsNative
 
     and ErrorStatic =
         [<Emit("new $0($1...)")>] abstract Create: error: U2<string, float> * ?reason: string * ?details: string -> Error
