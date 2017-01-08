@@ -1,10 +1,26 @@
 #r "node_modules/fable-core/Fable.Core.dll"
-#load "../../Feteor/lib/Fable.Import.Meteor.fs"
+#load "common/imports/collections.fsx"
+
 open Fable
 open Fable.Import.JS
 open Fable.Core.JsInterop
 open System
 open Fable.Import.Meteor.Meteor
+open Fable.Import.Meteor.Mongo
+open Collections.CommonColelctions
+
+
+
+
+let s = Todos.find().count()
+
+type TestType = {
+    Value : string
+} 
+
+type TestType1() = 
+    member x.Ok = "localhost"   
+    member val No = "127.0.0.1" with get,set
 
 
 Meteor.startup (fun _ -> 
@@ -35,18 +51,28 @@ Meteor.absoluteUrl("path", [
     ReplaceLocalhost
 
 ]) |> printfn "%s" 
-Meteor.absoluteUrl("path", [
+Meteor.absoluteUrl("path", [ 
     Secure
     RootUrl("http://neftedollar.com")
 ]) |> printfn "%s"
     
-Meteor.defer(fun () -> 
+Meteor.defer(fun () ->
+    let tt = { Value = "HI all" }
+    let tt1 = TestType1()
+    tt1.No <- tt1.No + tt1.No
+    let tt1s = JSON.stringify(tt1)
+    let tts = JSON.stringify(tt)
     if Meteor.isServer then
         printfn "%A" Meteor.methods
     Meteor.call("new_method") |> ignore
     Meteor.call("anotherTestMethod", "lol") |> ignore
     Meteor.call("anotherTestMethod", 3) |> ignore
     Meteor.call("anotherTestMethod", createObj [ "lol" ==> 3 ]) |> ignore
+    Meteor.call("anotherTestMethod", tt) |> ignore
+    Meteor.call("anotherTestMethod", tt1 ) |> ignore
+    Meteor.call("anotherTestMethod", tts) |> ignore
+    Meteor.call("anotherTestMethod", tt1s ) |> ignore
+    Todos.find().count() |> printfn "Todos.find().count() %A"
 )
 
 let mutable private IntervalId = 0.0
