@@ -49,7 +49,7 @@ module Mongo =
         abstract movedBefore: id: string * before: obj -> unit
         abstract removed: id: string -> unit
     and Cursor<'T> =
-        abstract count: ?applySkipLimit: bool -> float
+        abstract count: ?applySkipLimit: bool -> int
         abstract fetch: unit -> ResizeArray<'T>
         abstract forEach: callback: Func<'T, float, Cursor<'T>, unit> * ?thisArg: obj -> unit
         abstract map: callback: Func<'T, float, Cursor<'T>, 'U> * ?thisArg: obj -> ResizeArray<'U>
