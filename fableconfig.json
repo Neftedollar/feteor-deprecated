@@ -1,5 +1,5 @@
 {
-    "projFile": "./Feteor/Feteor.fsproj",
+    "projFile": "./Feteor/lib/lib.fsproj",
     "outDir": "dist",
     "dll": true    ,
     "targets" : {

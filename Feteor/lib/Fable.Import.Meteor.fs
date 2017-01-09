@@ -4,10 +4,10 @@ open System.Text.RegularExpressions
 open Fable.Core
 open Fable.Import.JS
 
-type LiveQueryHandle =
-    abstract stop: unit -> unit
 
 module Mongo = 
+    type LiveQueryHandle =
+        abstract stop: unit -> unit
     type Selector = 
         [<Emit("$0[$1]{{=$2}}")>] abstract Item: key: string -> obj with get, set
 

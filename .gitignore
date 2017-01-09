@@ -3,3 +3,4 @@ dist/
 [Bb]in/
 [Oo]bj/
 ExampleApplication/**/*.js
+**/*.suo
