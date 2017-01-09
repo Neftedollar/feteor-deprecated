@@ -1,5 +1,5 @@
 {
-    "projFile": "./Feteor/lib/lib.fsproj",
+    "projFile": "./Feteor/lib/Feteor.fsproj",
     "outDir": "dist",
     "dll": true    ,
     "targets" : {
@@ -9,4 +9,4 @@
             "ouiDir" : "dist/umd"
         }
     }
-}
+}   

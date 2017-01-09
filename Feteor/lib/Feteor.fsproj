@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Name>lib</Name>
-    <AssemblyName>lib</AssemblyName>
-    <RootNamespace>lib</RootNamespace>
+    <Name>Fable.Import.Meteor</Name>
+    <AssemblyName>Fable.Import.Meteor</AssemblyName>
+    <RootNamespace>Fable.Import.Meteor</RootNamespace>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>

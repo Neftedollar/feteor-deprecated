@@ -1,5 +1,6 @@
 {
     "projFile": "./TestApp/TestApp.fsproj",
     "module": "commonjs",
-    "outDir": "./"
+    "outDir": "./",
+    "sourceMaps": true
 }

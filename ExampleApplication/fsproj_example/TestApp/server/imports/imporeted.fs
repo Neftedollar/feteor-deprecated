@@ -1,10 +1,10 @@
 module TstsServer
 open Fable.Core
-open Fable.Meteor
+open Fable.Import.Meteor
 open MyCollections
 
 let count = todos.find().count()
-if count = 0.0 then
+if count = 0 then
      printfn "zero!"
      for x in 1..10 do
             let todo = {

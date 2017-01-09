@@ -1,16 +1,16 @@
 module ServerMain
 open Fable.Core
 open Fable.Core.JsInterop
-open Fable.Meteor
+open Fable.Import.Meteor.Meteor
 
 
-if Meteor.Globals.isServer then
-    Meteor.Globals.startup  (fun _ -> 
+if Meteor.isServer then
+    Meteor.startup  (fun _ -> 
         printfn __SOURCE_FILE__
     )
 else 
-    Meteor.Globals.startup 
+    Meteor.startup 
     $ fun _ -> printfn __SOURCE_FILE__
     |> ignore
 
-printfn "count %f" TstsServer.count
+printfn "count %i" TstsServer.count
