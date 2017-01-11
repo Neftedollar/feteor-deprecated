@@ -6,30 +6,66 @@ open Fable.Import.JS
 
 
 module Mongo = 
+    open Fable.Core.JsInterop
+     
+    
     type LiveQueryHandle =
         abstract stop: unit -> unit
+    [<KeyValueList>]
     type Selector = 
-        [<Emit("$0[$1]{{=$2}}")>] abstract Item: key: string -> obj with get, set
+        | [<Erase>]Select of string * obj
 
     and [<KeyValueList>]Modifier =
         interface end
     and [<KeyValueList>]SortSpecifier =
-        interface end
-    and FieldSpecifier =
-        [<Emit("$0[$1]{{=$2}}")>] abstract Item: id: string -> float with get, set
-    and CollectionStatic =
+        | [<Erase>] S of fieldname:string * int
+    and [<KeyValueList>]FieldSpecifier =
+        | [<Erase>] Field of fieldname:string * int
+    [<KeyValueList>]
+    type FindOneOptions<'T> =
+        ///Number of results to skip at the beginning
+        | Skip of int
+        /// (Client only) Default true; pass false to disable reactivity
+        | Reactive of bool
+        ///Overrides transform on the Collection for this cursor. Pass null(None) to disable transformation.
+        | Transform  of JsFunc1<'T, obj> option
+        /// Dictionary of fields to return or exclude.
+        | Fields of FieldSpecifier list
+        ///Sort order (default: natural order)
+        | Sort of   SortSpecifier list
+    [<KeyValueList>]
+    type FindOptions<'T> =
+        ///Number of results to skip at the beginning
+        | Skip of int
+        /// (Client only) Default true; pass false to disable reactivity
+        | Reactive of bool
+        ///Overrides transform on the Collection for this cursor. Pass null(None) to disable transformation.
+        | Transform  of JsFunc1<'T, obj> option
+        /// Dictionary of fields to return or exclude.
+        | Fields of FieldSpecifier list
+        ///Sort order (default: natural order)
+        | Sort of   SortSpecifier list
+        ///Maximum number of results to return 
+        | Limit of int
+        ///(Server only) Pass true to disable oplog-tailing on this query. This affects the way server processes calls to observe on this query. Disabling the oplog can be useful when working with data that updates in large batches.
+        | [<CompiledName("disableOplog")>]DisableOplog of bool 
+        ///(Server only) When oplog is disabled (through the use of disableOplog or when otherwise not available), the frequency (in milliseconds) of how often to poll this query when observing on the server. Defaults to 10000ms (10 seconds).
+        | [<CompiledName("pollingIntervalMs")>]PollingIntervalMs of int
+        ///(Server only) When oplog is disabled (through the use of disableOplog or when otherwise not available), the minimum time (in milliseconds) to allow between re-polling when observing on the server. Increasing this will save CPU and mongo load at the expense of slower updates to users. Decreasing this is not recommended. Defaults to 50ms.
+        | [<CompiledName("pollingThrottleMs")>]PollingThrottleMs  of int
+    type CollectionStatic =
         [<Emit("new $0($1...)")>] abstract Create: name: string * ?options: obj -> Collection<'T>
     and Collection<'T> =
         abstract allow: options: obj -> bool
         abstract deny: options: obj -> bool
-        abstract find: ?selector: U3<Selector, ObjectID, string> * ?options: obj -> Cursor<'T>
-        abstract findOne: ?selector: U3<Selector, ObjectID, string> * ?options: obj -> 'T
+        abstract find: ?selector: U3<Selector list, ObjectID, string> * ?options: FindOptions<'T> list -> Cursor<'T>
+        abstract findOne: ?selector: U3<Selector list, ObjectID, string> * ?options: FindOneOptions<'T> list -> 'T
         abstract insert: doc: 'T * ?callback: System.Action<Option<Object>,Option<string>> -> string
         abstract rawCollection: unit -> obj
         abstract rawDatabase: unit -> obj
-        abstract remove: selector: U3<Selector, ObjectID, string> * ?callback: Function -> float
-        abstract update: selector: U3<Selector, ObjectID, string> * modifier: Modifier * ?options: obj * ?callback: Function -> float
-        abstract upsert: selector: U3<Selector, ObjectID, string> * modifier: Modifier * ?options: obj * ?callback: Function -> obj
+        abstract remove: selector: U3<Selector list, ObjectID, string> * ?callback: Function -> float
+        abstract update: selector: U3<Selector list, ObjectID, string> * modifier: Modifier * ?options: obj * ?callback: Function -> float
+        abstract upsert: selector: U3<Selector list, ObjectID, string> * modifier: Modifier * ?options: obj * ?callback: Function -> obj
         abstract _ensureIndex: keys: U2<obj, string> * ?options: obj -> unit
         abstract _dropIndex: keys: U2<obj, string> -> unit
     and CursorStatic =

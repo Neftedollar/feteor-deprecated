@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Name>TestApp</Name>
@@ -44,9 +44,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Fable.Arch.Html.fs" />
+    <Compile Include="Fable.Arch.App.fs" />
+    <Compile Include="Fable.Arch.Virtualdom.fs" />
+    <Compile Include="Fable.Arch.RouteParser.fs" />
+    <Compile Include="Fable.Arch.Navigation.fs" />
+    <Compile Include="Fable.Arch.DevTools.fs" />
     <Compile Include="Fable.Import.Meteor.fs" />
     <Compile Include="common/collections.fs" />
-    <Compile Include="client/imports/reqClient.fs" />
+    <Compile Include="client/imports/todoComponent.fs" />
+    <Compile Include="client/imports/todoListComponent.fs" />
     <Compile Include="client/client.fs" />
     <Compile Include="server/imports/imporeted.fs" />
     <Compile Include="server/server.fs" />

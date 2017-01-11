@@ -12,6 +12,6 @@
     "meteor-node-stubs": "~0.2.0"
   },
   "devDependencies": {
-    "fable-compiler": "^0.7.26"
+    "fable-compiler": "^0.7.28"
   }
 }
