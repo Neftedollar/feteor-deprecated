@@ -8,6 +8,7 @@ type Todos(title:string, ``done``:bool) =
     member val Title = title with get,set
     member val Done = ``done`` with get,set
     member x._id() = jsNative
+
     
 
 let todos =  Mongo.Collection.Create<Todos>("todos")
