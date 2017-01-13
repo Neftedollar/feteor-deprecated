@@ -53,8 +53,17 @@ module Mongo =
         | [<CompiledName("pollingIntervalMs")>]PollingIntervalMs of int
         ///(Server only) When oplog is disabled (through the use of disableOplog or when otherwise not available), the minimum time (in milliseconds) to allow between re-polling when observing on the server. Increasing this will save CPU and mongo load at the expense of slower updates to users. Decreasing this is not recommended. Defaults to 50ms.
         | [<CompiledName("pollingThrottleMs")>]PollingThrottleMs  of int
+    [<StringEnum>]
+    type IdGeneration = 
+        |  [<CompiledName("STRING")>] STRING
+        |  [<CompiledName("MONGO")>] MONGO
+    [<KeyValueList>]
+    type CreateCollectonOptions<'T> = 
+        | [<CompiledName("idGeneration")>]IdGeneration of  IdGeneration
+        | Transform of JsFunc1<'T,obj>
+        | [<CompiledName("defineMutationMethods")>]DefineMutationMethods of bool
     type CollectionStatic =
-        [<Emit("new $0($1...)")>] abstract Create: name: string * ?options: obj -> Collection<'T>
+        [<Emit("new $0($1...)")>] abstract Create: name: string * ?options: CreateCollectonOptions<'T> list -> Collection<'T>
     and Collection<'T> =
         abstract allow: options: obj -> bool
         abstract deny: options: obj -> bool
@@ -217,7 +226,44 @@ module Meteor =
         abstract ready: unit -> unit
         abstract removed: collection: string * id: string -> unit
         abstract stop: unit -> unit
-    
+    type Computation =
+        ///Prevents this computation from rerunning.
+        abstract  stop : unit -> unit
+        ///Invalidates this computation so that it will be rerun.
+        abstract invalidate : unit -> unit
+        ///Registers callback to run when this computation is next invalidated, or runs it immediately if the computation is already invalidated. The callback is run exactly once and not upon future invalidations unless onInvalidate is called again after the computation becomes valid again.
+        abstract onInvalidate : System.Action<Computation> -> unit
+        ///Registers callback to run when this computation is stopped, or runs it immediately if the computation is already stopped. The callback is run after any onInvalidate callbacks.
+        abstract onStop : System.Action<Computation> -> unit
+        ///True if this computation has been stopped.
+        abstract stopped : bool
+        ///True if this computation has been invalidated (and not yet rerun), or if it has been stopped.
+        abstract invalidated :  bool
+        ///True during the initial run of the computation at the time Tracker.autorun is called, and false on subsequent reruns and at other times.
+        abstract firstRun : bool
+    type Dependency =
+        ///Invalidate all dependent computations immediately and remove them as dependents.
+        abstract changed : unit -> unit
+        ///Declares that the current computation (or fromComputation if given) depends on dependency. The computation will be invalidated the next time dependency changes.
+        abstract depend: Computation -> unit
+        ///True if this Dependency has one or more dependent Computations, which would be invalidated if this Dependency were to change.
+        abstract hasDependents : unit -> bool
+
+    [<Import("Tracker","meteor/tracker")>]
+    type Tracker =
+        ///Run a function now and rerun it later whenever its dependencies change. Returns a Computation object that can be used to stop or observe the rerunning.
+        static member autorun:runFunc:System.Func<Computation> * ?onError:System.Action<Error> -> unit = jsNative
+        //Process all reactive updates immediately and ensure that all invalidated computations are rerun.
+        static member flush:unit -> unit = jsNative
+        static member nonreactive: System.Action -> unit = jsNative
+        ///True if there is a current computation, meaning that dependencies on reactive data sources will be tracked and potentially cause the current computation to be rerun.
+        static member active : bool  = jsNative
+        ///The current computation, or null if there isn't one. The current computation is the Tracker.Computation object created by the innermost active call to Tracker.autorun, and it's the computation that gains dependencies when reactive data sources are accessed.
+        static member currentComputation: Computation option = jsNative
+        ///Registers a new onInvalidate callback on the current computation (which must exist), to be called immediately when the current computation is invalidated or stopped.
+        static member onInvalidate : System.Action<Computation> -> unit = jsNative
+        ///hedules a function to be called during the next flush, or later in the current flush if one is in progress, after all invalidated computations have been rerun. The function will be run once and not on subsequent flushes unless afterFlush is called again.
+        static member afterFlush: System.Action -> unit = jsNative
 
 module Accounts = 
      type [<Import("Accounts","meteor/accounts-base")>] Globals =

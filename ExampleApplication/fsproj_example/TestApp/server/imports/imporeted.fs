@@ -8,7 +8,7 @@ if count = 0 then
      printfn "zero!"
      for x in 1..10 do
             
-            let todo = Todos ((sprintf "title %d" x), false)
+            let todo = Todos.Create (sprintf "title %d" x) false
             let id = todos.insert todo
             printfn "%A" id
 else
