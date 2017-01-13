@@ -12,10 +12,10 @@
     "meteor-node-stubs": "~0.2.0",
     "fable-arch": "*",
     "core-js": "^2.4.1",
-    "fable-core": "*",
+    "fable-core": "^0.7.20",
     "virtual-dom": "^2.1.1"
   },
   "devDependencies": {
-    "fable-compiler": "*"
+    "fable-compiler": "^0.7.28"
   }
 }

@@ -9,7 +9,9 @@
         "**/obj": true,
         "**/.meteor" : true,
         "**/.vs": true,
-        "**/node_modules": false
+        "**/node_modules": false,
+        "fsproj_examples/**/*.js" : true,
+        "fsproj_examples/**/*.map" : true
     }
 ,
 "FSharp.automaticProjectModification": true
