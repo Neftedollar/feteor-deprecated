@@ -79,14 +79,16 @@ module Mongo =
         abstract _dropIndex: keys: U2<obj, string> -> unit
     and CursorStatic =
         [<Emit("new $0($1...)")>] abstract Create: unit -> Cursor<'T>
-    and ObserveCallbacks =
-        abstract added: document: obj -> unit
-        abstract addedAt: document: obj * atIndex: float * before: obj -> unit
-        abstract changed: newDocument: obj * oldDocument: obj -> unit
-        abstract changedAt: newDocument: obj * oldDocument: obj * indexAt: float -> unit
-        abstract removed: oldDocument: obj -> unit
-        abstract removedAt: oldDocument: obj * atIndex: float -> unit
-        abstract movedTo: document: obj * fromIndex: float * toIndex: float * before: obj -> unit
+        
+    and [<KeyValueList>] ObserveCallbacks<'T> =
+        | Added of Action<'T>
+        | [<CompiledName("addedAt")>]AddedAt of Action<'T, int, 'T>
+        | Changed of  Action<'T,'T>
+        | [<CompiledName("changedAt")>]ChangedAt of Action<'T,'T, int> 
+        | Removed of Action<'T>
+        | [<CompiledName("removedAt")>]RemovedAt of Action<'T, int>
+        | [<CompiledName("movedTo")>]MovedTo of Action<'T, int,int,'T>
+
     and ObserveChangesCallbacks =
         abstract added: id: string * fields: obj -> unit
         abstract addedBefore: id: string * fields: obj * before: obj -> unit
@@ -98,7 +100,7 @@ module Mongo =
         abstract fetch: unit -> ResizeArray<'T>
         abstract forEach: callback: Func<'T, float, Cursor<'T>, unit> * ?thisArg: obj -> unit
         abstract map: callback: Func<'T, float, Cursor<'T>, 'U> * ?thisArg: obj -> ResizeArray<'U>
-        abstract observe: callbacks: ObserveCallbacks -> LiveQueryHandle
+        abstract observe: callbacks: ObserveCallbacks<'T> list -> LiveQueryHandle
         abstract observeChanges: callbacks: ObserveChangesCallbacks -> LiveQueryHandle
     and ObjectIDStatic =
         [<Emit("new $0($1...)")>] abstract Create: ?hexString: string -> ObjectID
@@ -252,7 +254,7 @@ module Meteor =
     [<Import("Tracker","meteor/tracker")>]
     type Tracker =
         ///Run a function now and rerun it later whenever its dependencies change. Returns a Computation object that can be used to stop or observe the rerunning.
-        static member autorun:runFunc:System.Func<Computation> * ?onError:System.Action<Error> -> unit = jsNative
+        static member autorun(runFunc:System.Action<Computation> , ?onError:System.Action<Error>) = jsNative
         //Process all reactive updates immediately and ensure that all invalidated computations are rerun.
         static member flush:unit -> unit = jsNative
         static member nonreactive: System.Action -> unit = jsNative
